@@ -26,6 +26,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.SplitPane;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -54,7 +56,19 @@ public class ClockHW extends Application {
         
        
         EventHandler<ActionEvent> eventHandler=e -> {
-            clock1.setCurrentTime();
+            clock1.setCurrentTime(0);
+            
+            
+            clock2.setCurrentTime(1);
+            
+            
+            clock3.setCurrentTime(12);
+            clock4.setCurrentTime(8);
+            
+            lab1.setText("           Taipei         " + clock1.displaytime());
+            lab2.setText("           Tokyo         " + clock2.displaytime());
+            lab3.setText("           NewYork         " + clock3.displaytime());
+            lab4.setText("           London         " + clock4.displaytime());
         };
         
         Timeline animation = new Timeline(new KeyFrame(Duration.millis(1000), eventHandler));
@@ -131,13 +145,14 @@ class ClockPane extends Pane {
   private int hour;
   private int minute;
   private int second;
+  private int ampm;
 
   // Clock pane's width and height
   private double w = 300, h = 300;
   
   /** Construct a default clock with the current time*/
   public ClockPane() {
-    setCurrentTime();
+    setCurrentTime(0);
   }
 
   /** Construct a clock with specified hour, minute, and second */
@@ -148,6 +163,29 @@ class ClockPane extends Pane {
     paintClock();
   }
 
+  public String displaytime(){
+      Date date = new Date();
+      String tmpstr=new String();
+      String apmstr=new String();
+      
+      //String strDateFormat = "HH:mm:ss a";
+      //SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+      //tmpstr=sdf.format(date);
+      //System.out.println(tmpstr);
+      if(ampm==Calendar.AM){
+          apmstr="AM";
+      }
+      else{
+          apmstr="PM";
+      }
+      tmpstr=String.format("%02d:%02d:%02d  %s", hour, minute, second, apmstr);
+      
+      
+      return tmpstr;
+  }      
+  
+  
+  
   /** Return hour */
   public int getHour() {
     return hour;
@@ -204,15 +242,28 @@ class ClockPane extends Pane {
   }
   
   /* Set the current time for the clock */
-  public void setCurrentTime() {
+  public void setCurrentTime(int offsethour) {
     // Construct a calendar for the current date and time
     Calendar calendar = new GregorianCalendar();
 
     // Set current hour, minute and second
-    this.hour = calendar.get(Calendar.HOUR_OF_DAY);
+    this.hour = calendar.get(Calendar.HOUR_OF_DAY)+offsethour;
+    if(this.hour>24){
+        this.hour=this.hour-24;
+    }
     this.minute = calendar.get(Calendar.MINUTE);
     this.second = calendar.get(Calendar.SECOND);
+    //this.ampm=calendar.get(Calendar.AM_PM);
+    if(this.hour<12 && this.hour>=0){
+        this.ampm=Calendar.AM;                
+    }
+    else if(this.hour<24 && this.hour>=12){
+        this.ampm=Calendar.PM;                
+    }    
     
+    if(this.hour>12){
+        this.hour=this.hour-12;
+    }
     paintClock(); // Repaint the clock
   }
   
