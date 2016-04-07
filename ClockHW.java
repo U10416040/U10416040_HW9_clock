@@ -56,12 +56,8 @@ public class ClockHW extends Application {
         
        
         EventHandler<ActionEvent> eventHandler=e -> {
-            clock1.setCurrentTime(0);
-            
-            
-            clock2.setCurrentTime(1);
-            
-            
+            clock1.setCurrentTime(0);                        
+            clock2.setCurrentTime(1);                        
             clock3.setCurrentTime(12);
             clock4.setCurrentTime(8);
             
@@ -73,20 +69,7 @@ public class ClockHW extends Application {
         
         Timeline animation = new Timeline(new KeyFrame(Duration.millis(1000), eventHandler));
         animation.setCycleCount(Timeline.INDEFINITE);
-        animation.play();
-        /*
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        */
-        //StackPane root = new StackPane();
-        //root.getChildren().add(btn);
+        animation.play();        
         
         GridPane parentgrid=new GridPane();
         GridPane gd1=new GridPane();
@@ -98,17 +81,7 @@ public class ClockHW extends Application {
         parentgrid.add(gd2, 0, 1);
         parentgrid.add(gd3, 1, 0);
         parentgrid.add(gd4, 1, 1);
-        
-        /*
-        gd1.maxHeight(400);
-        gd1.maxWidth(400);
-        gd2.maxHeight(400);
-        gd2.maxWidth(400);
-        gd3.maxHeight(400);
-        gd3.maxWidth(400);
-        gd4.maxHeight(400);
-        gd4.maxWidth(400);
-        */
+                
         gd1.add(lab1, 0, 0);
         gd1.add(clock1, 0, 1);        
         
@@ -120,9 +93,7 @@ public class ClockHW extends Application {
         
         gd4.add(lab4, 0, 0);
         gd4.add(clock4, 0, 1);
-        
-        
-        
+                        
         //Scene scene = new Scene(clock, 300, 250);
         Scene scene = new Scene(parentgrid, 600, 800);
         
@@ -248,19 +219,20 @@ class ClockPane extends Pane {
 
     // Set current hour, minute and second
     this.hour = calendar.get(Calendar.HOUR_OF_DAY)+offsethour;
+    //if the hour is bigger than 24 than minus 24
     if(this.hour>24){
         this.hour=this.hour-24;
     }
     this.minute = calendar.get(Calendar.MINUTE);
-    this.second = calendar.get(Calendar.SECOND);
-    //this.ampm=calendar.get(Calendar.AM_PM);
+    this.second = calendar.get(Calendar.SECOND);    
+    //know is am or pm
     if(this.hour<12 && this.hour>=0){
         this.ampm=Calendar.AM;                
     }
     else if(this.hour<24 && this.hour>=12){
         this.ampm=Calendar.PM;                
     }    
-    
+    //change to 12 hour term
     if(this.hour>12){
         this.hour=this.hour-12;
     }
